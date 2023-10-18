@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>677872589282-2iclk6m2i2tlp08g3p1hjetjga9esf73.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.677872589282-2iclk6m2i2tlp08g3p1hjetjga9esf73</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDgax2j2XHMus-SnDSly0ioiojeDg2MqWk</string>
+	<key>GCM_SENDER_ID</key>
+	<string>677872589282</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.LukichevSergey.Sobes</string>
+	<key>PROJECT_ID</key>
+	<string>sobes-fd7bd</string>
+	<key>STORAGE_BUCKET</key>
+	<string>sobes-fd7bd.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:677872589282:ios:42b06e50d2955bc792c1bb</string>
+	<key>DATABASE_URL</key>
+	<string>https://sobes-fd7bd-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>

@@ -14,6 +14,7 @@ protocol QuestionListPresenterToInteractorProtocol: AnyObject {
     var questions: [Question] { get }
     
     func fetchQuestions()
+    func updateViewForQuestion(question: Question)
 }
 
 final class QuestionListInteractor {
@@ -45,6 +46,19 @@ extension QuestionListInteractor: QuestionListPresenterToInteractorProtocol {
             do {
                 _questions = try await database.getQuestions()
                 presenter.questionsIsFetched()
+            }
+        }
+    }
+    
+    @MainActor
+    func updateViewForQuestion(question: Question) {
+        logger.log("\(#fileID) -> \(#function)")
+        
+        Task {
+            do {
+                try await database.updateViewForQuestion(with: question.id)
+            } catch {
+                
             }
         }
     }

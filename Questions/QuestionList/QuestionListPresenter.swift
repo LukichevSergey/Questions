@@ -11,6 +11,8 @@ import Foundation
 // MARK: Protocol - QuestionListViewToPresenterProtocol (View -> Presenter)
 protocol QuestionListViewToPresenterProtocol: AnyObject {
 	func viewDidLoad()
+    func tableViewCellTapped(with question: Question)
+    func addButtonTapped()
 }
 
 // MARK: Protocol - QuestionListInteractorToPresenterProtocol (Interactor -> Presenter)
@@ -32,6 +34,19 @@ extension QuestionListPresenter: QuestionListViewToPresenterProtocol {
         logger.log("\(#fileID) -> \(#function)")
         
         interactor.fetchQuestions()
+    }
+    
+    func tableViewCellTapped(with question: Question) {
+        logger.log("\(#fileID) -> \(#function)")
+        
+        interactor.updateViewForQuestion(question: question)
+        router.navigateToQuestion(with: question)
+    }
+    
+    func addButtonTapped() {
+        logger.log("\(#fileID) -> \(#function)")
+        
+        router.navigateToQuestion(with: nil)
     }
 }
 

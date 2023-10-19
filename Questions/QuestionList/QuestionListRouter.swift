@@ -10,7 +10,7 @@ import Foundation
 
 // MARK: Protocol - QuestionListPresenterToRouterProtocol (Presenter -> Router)
 protocol QuestionListPresenterToRouterProtocol: AnyObject {
-
+    func navigateToQuestion(with question: Question?)
 }
 
 final class QuestionListRouter {
@@ -21,5 +21,10 @@ final class QuestionListRouter {
 
 // MARK: Extension - QuestionListPresenterToRouterProtocol
 extension QuestionListRouter: QuestionListPresenterToRouterProtocol {
-    
+    func navigateToQuestion(with question: Question?) {
+        logger.log("\(#fileID) -> \(#function)")
+        
+        let viewController = QuestionConfigurator().configure(with: question)
+        view.pushView(view: viewController)
+    }
 }

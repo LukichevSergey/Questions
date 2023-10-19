@@ -72,6 +72,9 @@ final class QuestionListViewController: UIViewController {
         
         view.backgroundColor = .white
         title = "Questions"
+        
+        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonTapped))
+        navigationItem.rightBarButtonItem = addButton
     }
     
     // MARK: - private func
@@ -80,6 +83,11 @@ final class QuestionListViewController: UIViewController {
         tableView.snp.makeConstraints { make in
             make.directionalEdges.equalToSuperview().inset(16)
         }
+    }
+    
+    @objc private func addButtonTapped() {
+        logger.log("\(#fileID) -> \(#function)")
+        presenter.addButtonTapped()
     }
 }
 
@@ -112,6 +120,6 @@ extension QuestionListViewController: QuestionListTableViewCellDelegate {
     func tableViewCellTapped(with question: Question) {
         logger.log("\(#fileID) -> \(#function)")
         
-        print(question.answer)
+        presenter.tableViewCellTapped(with: question)
     }
 }

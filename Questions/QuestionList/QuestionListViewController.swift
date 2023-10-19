@@ -10,7 +10,7 @@ import UIKit
 
 // MARK: Protocol - QuestionListPresenterToViewProtocol (Presenter -> View)
 protocol QuestionListPresenterToViewProtocol: AnyObject {
-
+    func setData(_ data: [Question])
 }
 
 // MARK: Protocol - QuestionListRouterToViewProtocol (Router -> View)
@@ -21,20 +21,43 @@ protocol QuestionListRouterToViewProtocol: AnyObject {
 
 final class QuestionListViewController: UIViewController {
     
+    private enum Section {
+        case main
+    }
+    
     // MARK: - Property
     var presenter: QuestionListViewToPresenterProtocol!
+    
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.register(QuestionListTableViewCell.self, forCellReuseIdentifier: QuestionListTableViewCell.reuseIdentifier)
+        tableView.keyboardDismissMode = .onDrag
+        tableView.separatorColor = .clear
+        tableView.backgroundColor = .white
+
+        return tableView
+    }()
+    
+    private lazy var dataSource = UITableViewDiffableDataSource<Section, Question>(tableView: tableView) { [weak self] tableView, indexPath, item in
+        
+        guard let self,
+              let cell = tableView.dequeueReusableCell(withIdentifier: QuestionListTableViewCell.reuseIdentifier, for: indexPath) as? QuestionListTableViewCell
+        else {
+            return UITableViewCell(style: .default, reuseIdentifier: nil)
+        }
+        
+        cell.configure(with: item)
+        cell.delegate = self
+        return cell
+    }
 
     // MARK: - init
     init() {
         super.init(nibName: nil, bundle: nil)
-
-        commonInit()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        
-        commonInit()
     }
     
     override func viewDidLoad() {
@@ -44,19 +67,33 @@ final class QuestionListViewController: UIViewController {
         presenter.viewDidLoad()
     }
     
-    // MARK: - private func
-    private func commonInit() {
-
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        view.backgroundColor = .white
+        title = "Questions"
     }
-
+    
+    // MARK: - private func
     private func configureUI() {
-
+        view.addSubview(tableView)
+        tableView.snp.makeConstraints { make in
+            make.directionalEdges.equalToSuperview().inset(16)
+        }
     }
 }
 
 // MARK: Extension - QuestionListPresenterToViewProtocol 
 extension QuestionListViewController: QuestionListPresenterToViewProtocol{
-    
+    func setData(_ data: [Question]) {
+        logger.log("\(#fileID) -> \(#function)")
+        var snapshot = NSDiffableDataSourceSnapshot<Section, Question>()
+        
+        snapshot.appendSections([Section.main])
+        snapshot.appendItems(data, toSection: Section.main)
+        
+        dataSource.apply(snapshot)
+    }
 }
 
 // MARK: Extension - QuestionListRouterToViewProtocol
@@ -67,5 +104,14 @@ extension QuestionListViewController: QuestionListRouterToViewProtocol{
 
     func pushView(view: UIViewController) {
         navigationController?.pushViewController(view, animated: true)
+    }
+}
+
+// MARK: Extension - QuestionListTableViewCellDelegate
+extension QuestionListViewController: QuestionListTableViewCellDelegate {
+    func tableViewCellTapped(with question: Question) {
+        logger.log("\(#fileID) -> \(#function)")
+        
+        print(question.answer)
     }
 }

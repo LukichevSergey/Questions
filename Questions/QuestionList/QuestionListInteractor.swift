@@ -11,23 +11,31 @@ import OSLog
 
 // MARK: Protocol - QuestionListPresenterToInteractorProtocol (Presenter -> Interactor)
 protocol QuestionListPresenterToInteractorProtocol: AnyObject {
+    var questions: [Question] { get }
+    
     func fetchQuestions()
 }
 
 final class QuestionListInteractor {
     
-    let database: QuestionsToDatabaseServiceProtocol
+    private let database: QuestionsToDatabaseServiceProtocol
+    private var _questions: [Question]
 
     // MARK: Properties
     weak var presenter: QuestionListInteractorToPresenterProtocol!
 
     init(database: QuestionsToDatabaseServiceProtocol) {
         self.database = database
+        self._questions = []
     }
 }
 
 // MARK: Extension - QuestionListPresenterToInteractorProtocol
 extension QuestionListInteractor: QuestionListPresenterToInteractorProtocol {
+    
+    var questions: [Question] {
+        return _questions
+    }
     
     @MainActor
     func fetchQuestions() {
@@ -35,8 +43,8 @@ extension QuestionListInteractor: QuestionListPresenterToInteractorProtocol {
         
         Task {
             do {
-                let questions = try await database.getQuestions()
-                print(questions)
+                _questions = try await database.getQuestions()
+                presenter.questionsIsFetched()
             }
         }
     }

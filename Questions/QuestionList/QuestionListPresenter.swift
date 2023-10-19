@@ -15,7 +15,7 @@ protocol QuestionListViewToPresenterProtocol: AnyObject {
 
 // MARK: Protocol - QuestionListInteractorToPresenterProtocol (Interactor -> Presenter)
 protocol QuestionListInteractorToPresenterProtocol: AnyObject {
-
+    func questionsIsFetched()
 }
 
 final class QuestionListPresenter {
@@ -37,5 +37,9 @@ extension QuestionListPresenter: QuestionListViewToPresenterProtocol {
 
 // MARK: Extension - QuestionListInteractorToPresenterProtocol
 extension QuestionListPresenter: QuestionListInteractorToPresenterProtocol {
-    
+    func questionsIsFetched() {
+        logger.log("\(#fileID) -> \(#function)")
+        
+        view?.setData(interactor.questions)
+    }
 }
